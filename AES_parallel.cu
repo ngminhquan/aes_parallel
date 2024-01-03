@@ -164,41 +164,19 @@ void test_performance_ctr_parallel(void){
 		printf("\n    +---------------------------------------------------------------+ ");
     for(i = pow(2,4); i <= AES_BLOCKS; i *= 2)
     {
-        //if(i < pow(2, 10))
-        //{
-            int times;
-            gettimeofday( &start, NULL );
-            for(times = 0; times < 3; times++)
-            {
-                AES_CTR_xcrypt_buffer(sbox, &ctx, in, i * AES_BLOCKLEN);
-                AES_CTR_xcrypt_buffer(sbox, &ctx, in, i * AES_BLOCKLEN);
-            }
-            gettimeofday( &end, NULL );
-            time1 = (1000000 * ( end.tv_sec - start.tv_sec ) + (end.tv_usec - start.tv_usec)) / 3;
 
-        //    gettimeofday( &start, NULL );
-        //    for(times = 0; times < 3; times++)
-        //    {
-        //        AES_ECB_encrypt_buffer_parallel(sbox, &ctx, in, i * AES_BLOCKLEN);
-        //        AES_ECB_decrypt_buffer_parallel(rsbox, &ctx, in, i * AES_BLOCKLEN);
-        //    }
-        //    gettimeofday( &end, NULL );
-        //    time2 = (1000000 * ( end.tv_sec - start.tv_sec ) + (end.tv_usec - start.tv_usec)) / 3;
-        //}
-        //else
-        //{
-        //    gettimeofday( &start, NULL );
-        //    AES_ECB_encrypt_buffer(sbox, &ctx, in, i * AES_BLOCKLEN);
-        //    AES_ECB_decrypt_buffer(rsbox, &ctx, in, i * AES_BLOCKLEN);
-        //    gettimeofday( &end, NULL );
-        //    time1 = (1000000 * ( end.tv_sec - start.tv_sec ) + (end.tv_usec - start.tv_usec));
+        gettimeofday( &start, NULL );
+        AES_CTR_xcrypt_buffer(sbox, &ctx, in, i * AES_BLOCKLEN);
+        AES_CTR_xcrypt_buffer(sbox, &ctx, in, i * AES_BLOCKLEN);
+        gettimeofday( &end, NULL );
+        time1 = (1000000 * ( end.tv_sec - start.tv_sec ) + (end.tv_usec - start.tv_usec));
 
-            gettimeofday( &start, NULL );
-            AES_CTR_xcrypt_buffer_parallel(sbox, &ctx, in, i * AES_BLOCKLEN);
-            AES_CTR_xcrypt_buffer_parallel(sbox, &ctx, in, i * AES_BLOCKLEN);
-            gettimeofday( &end, NULL );
-            time2 = (1000000 * ( end.tv_sec - start.tv_sec ) + (end.tv_usec - start.tv_usec));
-        //}
+        gettimeofday( &start, NULL );
+        AES_CTR_xcrypt_buffer_parallel(sbox, &ctx, in, i * AES_BLOCKLEN);
+        AES_CTR_xcrypt_buffer_parallel(sbox, &ctx, in, i * AES_BLOCKLEN);
+        gettimeofday( &end, NULL );
+        time2 = (1000000 * ( end.tv_sec - start.tv_sec ) + (end.tv_usec - start.tv_usec));
+        
         printf("\n    |  %12e |  %12.3lf |  %12.3lf |  %12.3lf |", (double)(i * AES_BLOCKLEN), time1 / (double) 1000, time2 / (double) 1000, time1 / time2);
     }
 		printf("\n    +---------------------------------------------------------------+ \n\n");
